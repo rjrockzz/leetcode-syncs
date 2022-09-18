@@ -8,6 +8,8 @@ class KthLargest:
             self.add(num)
     def add(self, val: int) -> int:
         heapq.heappush(self.heap, val)
+        # if after adding new items causes the heap size to increase beyond k,
+        # we then pop out the smallest element.
         if len(self.heap) > self.k:
             heapq.heappop(self.heap)
         
