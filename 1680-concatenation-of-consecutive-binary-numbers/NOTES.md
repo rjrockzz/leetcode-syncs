@@ -1,1 +1,2 @@
-​
+* Brute
+* Bit Manipulation
