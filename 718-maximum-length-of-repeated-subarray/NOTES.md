@@ -1,2 +1,2 @@
-* Strings
+* String
 * DP
