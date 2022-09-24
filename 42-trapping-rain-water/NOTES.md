@@ -1,1 +1,1 @@
-* Two Pointers
+* Two Pointer
