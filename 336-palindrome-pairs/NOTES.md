@@ -1,2 +1,2 @@
 * Brute
-* Tries
+* Trie
