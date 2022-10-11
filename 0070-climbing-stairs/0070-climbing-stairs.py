@@ -17,17 +17,36 @@ class Solution:
         Now given the above intuition, one can construct an array where each node stores the solution for each number n. Or if we look at it closer, it is clear that this is basically a fibonacci number, with the starting numbers as 1 and 2, instead of 1 and 1.
 
         '''
+        '''
         # Memoization : take the base cases inside the dictionary
-        memo = {}
-        memo[1] = 1
-        memo[2] = 2
+        
+        def climbStairs(self, n):
+            """
+            :type n: int
+            :rtype: int
+            """
+            memo ={}
+            memo[1] = 1
+            memo[2] = 2
+
+            def climb(n):
+                if n in memo: # if the recurssion already done before first take a look-up in the look-up table
+                    return memo[n]
+                else:   # Store the recurssion function in the look-up table and reuturn the stored look-up table function
+                    memo[n] =  climb(n-1) + climb(n-2)
+                    return memo[n]
+
+            return climb(n)
+        '''
         
         def climb(n):
-            if n in memo:
-                return memo[n]
-            else:
-                memo[n] = climb(n-1) + climb(n-2)
-                return memo[n]
+            if n>=0 and n<=2: return n
+            dp = [0] * (n+1) # tabulation initialization with n+1
+            dp[1] = 1
+            dp[2] = 2
+            for i in range(3, n+1):
+                dp[i] = dp[i-1] + dp[i-2]
+            return dp[n]
         
         return climb(n)
         
