@@ -17,16 +17,17 @@ class Solution:
         Now given the above intuition, one can construct an array where each node stores the solution for each number n. Or if we look at it closer, it is clear that this is basically a fibonacci number, with the starting numbers as 1 and 2, instead of 1 and 1.
 
         '''
-        if n<=0:
-            return 0
-        if n==1:
-            return 1
-        if n==2:
-            return 2
-        one_step_before, two_step_before, all_ways = 2,1,0
+        # Memoization : take the base cases inside the dictionary
+        memo = {}
+        memo[1] = 1
+        memo[2] = 2
         
-        for i in range(2, n):
-            all_ways = two_step_before + one_step_before
-            two_step_before = one_step_before
-            one_step_before = all_ways
-        return all_ways
+        def climb(n):
+            if n in memo:
+                return memo[n]
+            else:
+                memo[n] = climb(n-1) + climb(n-2)
+                return memo[n]
+        
+        return climb(n)
+        
