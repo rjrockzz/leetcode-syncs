@@ -1,3 +1,9 @@
+'''
+Segment Tree logic here ->
+* Minimum of Range
+* Sum of Range
+* Maximum of Range
+'''
 class NumArray:
     # So the logic here is actually similar to the segment trees, but the difference comes 
     # to be in the range sum, instead of finding the minimum element in the array.
