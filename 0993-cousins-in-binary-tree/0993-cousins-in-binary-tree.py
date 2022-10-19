@@ -13,27 +13,18 @@ class Solution:
     * Compare the parents and depth of two nodes found and get result
     '''
     def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
-        #BFS
+        #DFS
         result = [] # Stores the (parent,depth) tuple
         
-        queue = deque([(root, None, 0)]) 
-        # current_node, parent of the node, depth
+        def dfs(node, parent, depth):
+            if not node:
+                return
+            if node.val == x or node.val==y:
+                result.append((parent, depth))
+            dfs(node.left, node, depth+1)
+            dfs(node.right, node, depth+1)
         
-        # start with the Vanilla BFS
-        while queue:
-            # An optimization to stop early if both the targets found.
-            # Since once we get both the targets inside our result array, 
-            # we could say that the final result can now be calculated!
-            if len(result)==2:
-                break
-            node, parent, depth = queue.popleft()
-            # if the target is found
-            if node.val == x or node.val == y:
-                result.append((parent,depth))
-            if node.left:
-                queue.append((node.left, node, depth+1))
-            if node.right:
-                queue.append((node.right, node, depth+1))
+        dfs(root, None, 0)
         node_x, node_y = result
         
         # just need to compare now!
