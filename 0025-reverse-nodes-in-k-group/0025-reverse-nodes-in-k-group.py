@@ -4,20 +4,27 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
-        mod_list,lst,i =[], [],0
-        while head:
-            lst.append(head.val)
-            head = head.next
-        
-        while i+k<=len(lst):
-            mod_list.extend(lst[i:i+k][::-1])
-            i+=k
-        mod_list.extend(lst[i:])
-        
-        cur = dummy = ListNode(0)
-        for i in mod_list:
-            cur.next = ListNode(i)
-            cur = cur.next
-        return dummy.next
+    '''
+    Use a dummy head, and
+    l, r : define reversing range
+    pre, cur : used in reversing, standard reverse linked linked list method
+    jump : used to connect last node in previous k-group to first node in following k-group
+    '''
+    def reverseKGroup(self, head, k):
+        dummy = jump = ListNode(0)
+        dummy.next = l = r = head
+
+        while True:
+            count = 0
+            while r and count < k:   # use r to locate the range
+                r = r.next
+                count += 1
+            if count == k:  # if size k satisfied, reverse the inner linked list
+                pre, cur = r, l
+                for _ in range(k):
+                    cur.next, cur, pre = pre, cur.next, cur  # standard reversing
+                jump.next, jump, l = pre, l, r  # connect two k-groups
+            else:
+                return dummy.next
+
             
