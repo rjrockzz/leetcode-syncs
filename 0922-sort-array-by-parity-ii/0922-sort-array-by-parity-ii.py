@@ -1,15 +1,21 @@
 class Solution:
-    def sortArrayByParityII(self, nums: List[int]) -> List[int]:
-        builder_odd = []
-        builder_even = []
-        for num in nums:
-            if num%2==0:
-                builder_even.append(num)
+    def sortArrayByParityII(self, a):
+        i = 0 # pointer for even misplaced
+        j = 1 # pointer for odd misplaced
+        sz = len(a)
+        
+        # invariant: for every misplaced odd there is misplaced even
+        # since there is just enough space for odds and evens
+
+        while i < sz and j < sz:
+            if a[i] % 2 == 0:
+                i += 2
+            elif a[j] % 2 == 1:
+                j += 2
             else:
-                builder_odd.append(num)
-        for i in range(len(nums)):
-            if i%2==0:
-                nums[i] = builder_even.pop(0)
-            else:
-                nums[i] = builder_odd.pop(0)
-        return nums
+                # a[i] % 2 == 1 AND a[j] % 2 == 0
+                a[i],a[j] = a[j],a[i]
+                i += 2
+                j += 2
+
+        return a
