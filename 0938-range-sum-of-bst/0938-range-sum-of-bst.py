@@ -15,7 +15,8 @@ class Solution:
                 return []
             if root.val>=low and root.val<=high:
                 sum_so_far+=root.val
-            return dfs(root.left) + [root.val] + dfs(root.right)
+            if root.val > low:  dfs(root.left)
+            if root.val < high: dfs(root.right)
         dfs(root)
         return sum_so_far
         
