@@ -15,6 +15,8 @@ class Solution:
                 return []
             if root.val>=low and root.val<=high:
                 sum_so_far+=root.val
+            # one optimization can be to search for the left and the 
+            # right, while checking with the ranged values.
             if root.val > low:  dfs(root.left)
             if root.val < high: dfs(root.right)
         dfs(root)
