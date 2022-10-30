@@ -1,10 +1,11 @@
 class Solution:
-    def repeatedCharacter(self, s: str) -> str:        
-        hashmap = {}
+    def repeatedCharacter(self, s):
+        seen = set()
+
         for i in s:
-            hashmap[i]= 1+ hashmap.get(i,0)
-            if hashmap[i]==2:
+            if i not in seen:
+                seen.add(i)
+            else:
                 return i
-        return ""
-            
+
             
