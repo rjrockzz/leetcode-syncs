@@ -1,0 +1,3 @@
+* Brute
+* Heap
+* Bucket Sort
