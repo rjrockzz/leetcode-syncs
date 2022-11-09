@@ -7,7 +7,7 @@
 group:
   repos: |
     rjrockzz/leetcode-syncs
-    rjrockzz/leetcode
+    rjrockzz/rjrockzz
   files:
     - source: .github/workflows/
       dest: .github/workflows/
