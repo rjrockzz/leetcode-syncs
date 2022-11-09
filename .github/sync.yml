@@ -1,0 +1,6 @@
+rjrockzz/leetcode-syncs:
+  - .github/workflows/sync.yml
+
+rjrockzz/leetcode:
+  - source: .github/workflows/sync.yml
+    dest: .github/workflows/stale.yml
