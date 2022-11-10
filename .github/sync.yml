@@ -1,13 +1,2 @@
-# rjrockzz/leetcode-syncs:
-#   - .github/workflows/sync.yml
-
-# rjrockzz/leetcode:
-#   - source: .github/workflows/sync.yml
-#     dest: .github/workflows/stale.yml
-group:
-  repos: |
-    rjrockzz/leetcode-syncs
-    rjrockzz/rjrockzz
-  files:
-    - source: .github/workflows/
-      dest: .github/workflows/
+- name: Commit file
+    run: python commit_file.py
