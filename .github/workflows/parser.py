@@ -1,4 +1,4 @@
-
+from github import Github
 import os
 import shutil
 
@@ -6,6 +6,41 @@ import shutil
 # dst = "leetcode-parser/String/344. Reverse String/"
 # shutil.copytree(src, dst)
 import glob
+
+def parse_to_leetcode(git_repo, myString, source,final_dir):
+    g = Github(
+        "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")
+    repo = g.get_user().get_repo(git_repo)
+    all_files = []
+    contents = repo.get_contents("")
+    while contents:
+        file_content = contents.pop(0)
+        if file_content.type == "dir":
+            contents.extend(repo.get_contents(file_content.path))
+        else:
+            file = file_content
+            all_files.append(str(file).replace(
+                'ContentFile(path="', '').replace('")', ''))
+
+    # myString = "String"
+    # final_dir = "1047. Remove All Adjacent Duplicates In String"
+    # source = "1047-remove-all-adjacent-duplicates-in-string/"
+    # destination = "leetcode-parser/String/1047. Remove All Adjacent Duplicates In String/"
+    source = source.split("/")[0]
+    file_lists = os.listdir(source)
+    for files in file_lists:
+        with open(source+"/"+files, 'r') as file:
+            content = file.read()
+
+        # Upload to github
+        git_prefix = myString + "/" + final_dir + "/"
+        git_file = git_prefix + files
+        if git_file in all_files:
+            contents = repo.get_contents(git_file)
+            repo.update_file(contents.path, "committing files",
+                            content, contents.sha, branch="master")
+            print(git_file + ' UPDATED')
+
 path = '../leetcode-syncs/*'
 counter = 0
 hashset = set()
@@ -27,6 +62,12 @@ for filename in glob.glob(os.path.join(path, 'NOTES.md')):
             source = filename.rsplit('/', 2)[-2] + "/"
             try:
                 shutil.copytree(source, destination)
+                parse_to_leetcode("leetcode-syncs")
+                parse_to_leetcode("leetcode")
+                print("MyString : "+myString)
+                print("final_dir : "+final_dir)
+                print("source : "+source)
+                print("destination : "+destination)
                 print("'{}' successfully parsed and placed under topic {}...".format(
                     final_dir, myString))
             except OSError as e:
