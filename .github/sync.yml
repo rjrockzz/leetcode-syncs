@@ -1,2 +1,0 @@
-- name: Commit file
-    run: python commit_file.py
