@@ -4,7 +4,7 @@ import shutil
 import glob
 
 
-def parse_to_leetcode(git_repo, myString, source, final_dir,is_root=False):
+def parse_to_leetcode(git_repo, myString, source, final_dir, is_root=False):
     if is_root:
         myString = './leetcode-parser/'+myString
     g = Github(
@@ -24,12 +24,13 @@ def parse_to_leetcode(git_repo, myString, source, final_dir,is_root=False):
         try:
             contents = repo.get_contents(git_file, "main")
             repo.update_file(contents.path, "committing files",
-                            content, contents.sha, branch="main")
+                             content, contents.sha, branch="main")
             print(git_file + ' UPDATED')
         except Exception:
             repo.create_file(git_file, "committing files",
-                            content, branch="main")
+                             content, branch="main")
             print(git_file + ' CREATED')
+
 
 path = '../leetcode-syncs/*'
 counter = 0
