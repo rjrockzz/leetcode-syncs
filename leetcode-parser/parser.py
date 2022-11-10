@@ -7,7 +7,8 @@ import glob
 def parse_to_leetcode(git_repo, myString, source, final_dir, is_root=False):
     if is_root:
         myString = './leetcode-parser/'+myString
-    g = Github("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")
+    g = Github(
+        "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")
 
     repo = g.get_user().get_repo(git_repo)
 
