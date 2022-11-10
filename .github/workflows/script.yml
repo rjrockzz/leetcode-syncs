@@ -24,7 +24,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
+      - name: Installing PyGitHub Packages
+        run: pip install PyGithub
       # Runs a single command using the runners shell
       - name: Run parse script
-        run: python .github/workflows/parser.py
+        run: python leetcode-parser/parser.py
