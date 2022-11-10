@@ -1,3 +1,4 @@
+
 import os
 import shutil
 
@@ -26,6 +27,8 @@ for filename in glob.glob(os.path.join(path, 'NOTES.md')):
             source = filename.rsplit('/', 2)[-2] +"/"
             try:
                 shutil.copytree(source, destination)
+                print("'{}' successfully parsed and placed under topic {}...".format(
+                    final_dir,myString))
             except OSError as e:
-                print("File : {} may exist already...".format(destination))
+                pass
             
