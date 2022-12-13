@@ -6,9 +6,17 @@ SELECT
     o.order_date
 FROM
     Products p
-INNER JOIN Orders o ON p.product_id = o.product_id
-INNER JOIN (SELECT product_id, MAX(order_date) AS max_date FROM Orders GROUP BY product_id) o2
-    ON o.product_id = o2.product_id AND o.order_date = o2.max_date
+INNER JOIN (
+    SELECT
+        order_id,
+        product_id,
+        order_date,
+        RANK() OVER (PARTITION BY product_id ORDER BY order_date DESC) `rank`
+    FROM Orders
+) o
+    ON p.product_id = o.product_id
+WHERE
+    o.rank = 1
 ORDER BY
     p.product_name ASC,
     p.product_id ASC,
