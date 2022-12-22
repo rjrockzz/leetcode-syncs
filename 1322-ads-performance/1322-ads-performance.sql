@@ -1,0 +1,2 @@
+# Write your MySQL query statement below
+select ad_id, ifnull(round(sum(case when action = "Clicked" then 1 else 0 end)*100/sum(case when action = "Clicked" or action = "Viewed" then 1 else 0 end), 2), 0.00) as ctr from ads group by 1 order by 2 desc, 1
