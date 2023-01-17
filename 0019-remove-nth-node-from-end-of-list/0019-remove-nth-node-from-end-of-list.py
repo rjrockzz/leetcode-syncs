@@ -8,7 +8,7 @@ class Solution:
         # REMOVING FROM THE END tbh.
         dummy = ListNode(0) # Sentinel Node
         dummy.next = head
-        current_ptr ,deletion_ptr = dummy,dummy 
+        current_ptr ,deletion_ptr = dummy,dummy
         while current_ptr.next:
             if n==0:
                 deletion_ptr = deletion_ptr.next
