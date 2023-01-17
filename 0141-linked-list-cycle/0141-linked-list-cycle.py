@@ -5,15 +5,13 @@
 #         self.next = None
 
 class Solution:
-    def hasCycle(self, head: Optional[ListNode]) -> bool:
-        hashset = set()
-        while head:
-            # Note that we're actually checking for the ListNode 
-            # if it has been already visited, and not the value 
-            # of the head.
-            if head in hashset:
-                return True
-            else:
-                hashset.add(head)
-            head = head.next
+    def hasCycle(self, head):
+        slow, fast = head, head
+        while fast and fast.next:
+            # Here we check for both
+            #   1. If the fast initially itself isn't NULL.
+            #   2. If the NEXT value to the FAST exists or NOT.
+            fast = fast.next.next
+            slow = slow.next
+            if slow == fast: return True
         return False
