@@ -8,6 +8,9 @@ class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
         hashset = set()
         while head:
+            # Note that we're actually checking for the ListNode 
+            # if it has been already visited, and not the value 
+            # of the head.
             if head in hashset:
                 return True
             else:
