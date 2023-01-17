@@ -1,2 +1,1 @@
-* Two Pointer
-* Linked List
+​
