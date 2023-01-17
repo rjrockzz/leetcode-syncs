@@ -6,15 +6,21 @@
 
 class Solution:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        # We can maintain a Hashmap, with our KEY as the ListNode and the VALUE as the index
-        hashmap = {}
-        index = 0
-        while head:
-            if head in hashmap:
-                return head
-            else:
-                hashmap[head] = index
-            index+=1
-            head = head.next
-        return None
-            
+        fast = slow = head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                break
+            # 1st part of the iteration is DONE! :)
+            # We've detected the Cycle, now we need to find the 
+            # Starting Points, where the cycle began.
+        
+        if not fast or not fast.next:
+            return None
+        # 2nd iteration begins => Mathematical Proof
+        slow = head
+        while slow!=fast:
+            slow = slow.next
+            fast = fast.next
+        return slow
