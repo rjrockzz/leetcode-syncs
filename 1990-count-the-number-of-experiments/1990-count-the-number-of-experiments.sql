@@ -1,25 +1,27 @@
-with cte as (select * from 
-(select "Android" as platform 
-union 
-select "IOS" as platform 
-union 
-select "Web" as platform) as a 
-join
-(select "Reading" as experiment_name 
-union 
-select "Sports" as experiment_name 
-union 
-select "Programming" as experiment_name) as b
-order by platform)
+# Write your MySQL query statement below
+/*
+* experiment_id -> PK
+* platform -> ("Android", "IOS", "Web")
+* experiment_name -> ('Reading', 'Sports', 'Programming')
 
-select cte.platform,
-       cte.experiment_name,
-	   coalesce(count(experiment_id),0) as num_experiments 
-from cte 
-left join 
-Experiments as e 
-on cte.platform=e.platform 
-   and 
-   cte.experiment_name=e.experiment_name
-group by 1,2
-order by 1
+Catch ->
+- You need to cosider that the enums are exisitng separately.
+
+*/
+with platform as(
+    select "Android" as platform union all
+    select "IOS" UNION ALL
+    select "Web"
+),
+experiment_name as(
+    select "Reading" as experiment_name union all
+    select "Sports" union all
+    select "Programming"
+)
+,overall_table as
+(
+    select distinct a.platform, b.experiment_name from platform a,experiment_name b 
+),
+counts as (
+    select platform, experiment_name, count(*) as num_experiments from experiments group by 1,2
+) select o.platform, o.experiment_name, ifnull(c.num_experiments,0) as num_experiments from overall_table o left join counts c on o.platform = c.platform and o.experiment_name=c.experiment_name
