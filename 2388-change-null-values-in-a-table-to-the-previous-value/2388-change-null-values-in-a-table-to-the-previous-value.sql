@@ -1,26 +1,19 @@
 # Write your MySQL query statement below
-WITH RECURSIVE WithRowNum (row_num, id, drink) AS (
-    SELECT
-        ROW_NUMBER() OVER() AS row_num,
-        id,
-        drink
-    FROM CoffeeShop
-), Result (row_num, id, drink) AS (
-    SELECT
-        row_num,
-        id,
-        drink
-    FROM WithRowNum
-    WHERE row_num = 1
-    UNION ALL
-    SELECT
-        WithRowNum.row_num,
-        WithRowNum.id,
-        IFNULL(WithRowNum.drink, Result.drink) AS drink
-    FROM Result
-    JOIN WithRowNum
-    ON Result.row_num = WithRowNum.row_num - 1
-)
+# This is the same question that AB solved in his videos:)))
 
-SELECT id, drink
-FROM Result;
+with cte AS (
+    SELECT
+        *,
+        SUM(IF(drink IS NOT NULL, 1, 0)) over win AS grp
+    FROM
+        CoffeeShop 
+    WINDOW win AS (
+        ROWS BETWEEN UNBOUNDED preceding
+        AND CURRENT ROW
+        )
+)
+SELECT
+    id,
+    first_value(drink) over(PARTITION by grp order by grp) AS drink
+FROM
+    cte;
