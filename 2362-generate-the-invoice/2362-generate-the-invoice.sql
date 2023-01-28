@@ -1,10 +1,51 @@
 # Write your MySQL query statement below
-with 
-# inner join two tables for future use
-cte0 as (select p1.*, p2.price, quantity * price as prices from Purchases p1 join Products p2 on p1.product_id = p2.product_id), 
-# rank the invoices per their purchase amount from high to low
-cte1 as (select invoice_id, rank() over (order by sum(prices) desc) as rnk from cte0 group by invoice_id), 
-# select the invoice with the maximum purchase amount and the smallest invoice_id
-cte2 as (select invoice_id from cte1 where rnk = 1 order by invoice_id limit 1)
-# select its product_id, quantity, and total price for each product_id
-select product_id, quantity, prices as price from cte0 where invoice_id in (select * from cte2);
+/* 
+Products
+* product_id
+* price
+
+Purchases
+* invoice_id
+* product_id
+* quantity
+*/
+# CTEs
+WITH details_by_invoices AS (
+    # Calculate total spendings for each row from `Purchases` table
+    SELECT
+        pu.invoice_id
+        , pu.product_id
+        , pu.quantity
+        , pu.quantity * pr.price AS price
+    FROM
+        Purchases AS pu
+            INNER JOIN Products AS pr
+                ON pu.product_id = pr.product_id
+)
+, invoice_with_max_total AS (
+    # Find `invoice_id` with max spendings and, in case of tie, with minimal `invoice_id`
+    SELECT
+        invoice_id
+    FROM
+        details_by_invoices
+    GROUP BY
+        invoice_id
+    ORDER BY
+        SUM(price) DESC
+        , invoice_id ASC
+    LIMIT 1
+)
+# Query's body
+SELECT
+    product_id
+    , quantity
+    , price
+FROM
+    details_by_invoices
+WHERE
+    invoice_id IN (
+        SELECT
+            invoice_id
+        FROM
+            invoice_with_max_total
+    );
