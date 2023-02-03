@@ -1,17 +1,27 @@
 # Write your MySQL query statement below
-with c as (
-    select l1.user_id as uid1, l2.user_id as uid2, count(distinct l1.song_id) as ct
-    from listens l1
-    join listens l2
-    on l1.song_id=l2.song_id and l1.day=l2.day and l1.user_id<>l2.user_id  # make sure l1.user_id != l2.user_id, we don't wanna join on user_id itself
-    group by l1.user_id, l2.user_id, l1.day
-    having ct>=3  # make sure the number of different songs on each day >=3
-), f (uid1, uid2) as (
-    select user1_id, user2_id from friendship
-    union
-    select user2_id, user1_id from friendship
+/* 
+Almost the same requirements as the Leetcodify Friends Recommendations
+We have to recommend some new friends, based on the firneships we establishes before in the frienship table, based on the previous conditions
+*/
+with BiDirectional as
+(
+    SELECT user1_id, user2_id from Friendship
+    UNION
+    SELECT user2_id, user1_id from Friendship
 )
-select uid1 as user_id, uid2 as recommended_id
-from c
-where (uid1, uid2) not in (select uid1, uid2 from f)
-group by uid1, uid2;
+SELECT Distinct A.user_id as user_id,
+                B.user_id as recommended_id
+FROM
+    LISTENS A
+JOIN
+    LISTENS B
+ON
+    A.user_id <> B.user_id AND
+    A.song_id = B.song_id AND
+    A.day = B.day
+LEFT JOIN BiDirectional bi on
+    bi.user1_id = A.user_id AND
+    bi.user2_id = B.user_id
+WHERE bi.user1_id is NULL
+GROUP BY A.user_id, B.user_id, A.day
+HAVING COUNT(DISTINCT A.song_id)>=3
