@@ -11,6 +11,7 @@ Friendship
 user1_id < user2_id
 
 Concept: Mapping Question, wish we could use a Hashmap haha.
+For which we'll use WHERE (KEY, VALUE) IN (SELECT * FROM FRIENDSHIP)
 */
 select distinct A.user_id as user1_id, B.user_id as user2_id from listens A, listens B
 where A.day = B.day AND
